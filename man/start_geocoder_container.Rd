@@ -4,7 +4,9 @@
 \alias{start_geocoder_container}
 \title{start geocoding container}
 \usage{
-start_geocoder_container(image_name = "degauss/geocoder")
+start_geocoder_container(
+  image_name = getOption("offlinegeocoder.image", "ghcr.io/degauss-org/geocoder:v3.4.0")
+)
 }
 \arguments{
 \item{image_name}{name of geocoding image; can be used to specify the version

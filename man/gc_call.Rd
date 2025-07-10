@@ -4,7 +4,7 @@
 \alias{gc_call}
 \title{call a running geocoding container to geocode an address}
 \usage{
-gc_call(address)
+gc_call(address, version = getOption("offlinegeocoder.version", "3.4"))
 }
 \arguments{
 \item{address}{a string; see vignette for best practices and examples}

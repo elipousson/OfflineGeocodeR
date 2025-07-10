@@ -19,16 +19,27 @@ find_docker_cmd <- function() {
 #'   \code{degauss/geocoder_slim:latest}
 #'
 #' @export
-start_geocoder_container <- function(image_name = 'degauss/geocoder:3.0') {
+start_geocoder_container <- function(
+  image_name = getOption(
+    "offlinegeocoder.image",
+    "ghcr.io/degauss-org/geocoder:v3.4.0"
+  )
+) {
   message('starting geocoding container...')
   docker_cmd <- find_docker_cmd()
-  system2(docker_cmd,
-          args = c('run','-it','-d','--name gs',
-                   '--entrypoint /bin/bash',
-                   image_name),
-          stdout = NULL)
+  system2(
+    docker_cmd,
+    args = c(
+      'run',
+      '-it',
+      '-d',
+      '--name gs',
+      '--entrypoint /bin/bash',
+      image_name
+    ),
+    stdout = NULL
+  )
   message('and loading address range database...')
-  invisible(gc_call('3333 Burnet Ave Cincinnati OH 45229'))
 }
 
 #' stop geocoding container
@@ -53,13 +64,24 @@ stop_geocoder_container <- function() {
 #'
 #' @export
 #' @importFrom jsonlite fromJSON
-gc_call <- function(address) {
+gc_call <- function(
+  address,
+  version = getOption("offlinegeocoder.version", "3.4")
+) {
   docker_cmd <- find_docker_cmd()
 
-  docker_out <- system2(docker_cmd,
+  geocode_rb <- "/app/geocode.rb"
+  if (version <= "3.1.0") {
+    geocode_rb <- "/root/geocoder/geocode.rb"
+  }
+
+  docker_out <- system2(
+    docker_cmd,
     args = c(
-      "exec", "gs",
-      "ruby", "/root/geocoder/geocode.rb",
+      "exec",
+      "gs",
+      "ruby",
+      geocode_rb,
       shQuote(address)
     ),
     stderr = FALSE,
@@ -71,11 +93,20 @@ gc_call <- function(address) {
   out$fips_county <- NULL
 
   if (length(out) == 0) {
-    out <- tibble(
-      street = NA, zip = NA, city = NA, state = NA,
-      lat = NA, lon = NA, score = NA, precision = NA
+    out <- data.frame(
+      street = NA,
+      zip = NA,
+      city = NA,
+      state = NA,
+      lat = NA,
+      lon = NA,
+      score = NA,
+      # TODO: Check if prenum and number were added in a later version
+      prenum = NA,
+      number = NA,
+      precision = NA
     )
   }
 
-  return(out)
+  do.call(out, rbind)
 }
