@@ -1,19 +1,26 @@
 Package: OfflineGeocodeR
-Title: Geocoding Inside R Based on a Dockerized Offline TIGER/Line Range Geocoder
+Title: Geocoding Inside R Based on a Dockerized Offline TIGER/Line Range
+    Geocoder
 Version: 0.2
-Authors@R: person("Cole", "Brokamp", email = "cole.brokamp@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Cole", "Brokamp", , "cole.brokamp@gmail.com", role = c("aut", "cre")),
+    person("Eli", "Pousson", , "eli.pousson@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0001-8280-1706"))
+  )
 Description: Uses a local Docker installation to pull and run an offline
-    geocoding container in the background. The geocode() function calls the
-    container and aggregates the results, optionally using a cache for memoization.
+    geocoding container in the background. The geocode() function calls
+    the container and aggregates the results, optionally using a cache for
+    memoization.
+License: GPL-3 + file LICENSE
 Depends:
     R (>= 3.3.2)
-License: GPL-3 + file LICENSE
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.3.2
-Imports: 
+Imports:
     jsonlite (>= 1.7.2),
     mappp (>= 0.2.1)
-Suggests: 
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.3.2
