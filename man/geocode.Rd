@@ -4,18 +4,21 @@
 \alias{geocode}
 \title{geocode}
 \usage{
-geocode(addresses, ...)
+geocode(addresses, ..., cache_name = tempdir())
 }
 \arguments{
 \item{addresses}{a list or vector addresses}
 
-\item{...}{additional arguments passed to \code{CB::mappp}; set options for
+\item{...}{additional arguments passed to \code{\link[mappp:mappp]{mappp::mappp()}}; set options for
 cache here}
+
+\item{cache_name}{Name or path for a custom cache directory. Defaults to
+\code{tempdir()}.}
 }
 \value{
 list of geocoding results with one address per element; some
-  addresses may return more than one geocoding result if there is a tie among
-  the best matches
+addresses may return more than one geocoding result if there is a tie among
+the best matches
 }
 \description{
 To prevent errors and optimize accuracy, please remove non alphanumeric
@@ -24,7 +27,7 @@ cleaning is outside the scope of this package and should be completed prior
 to geocoding.
 }
 \details{
-By default, geocoding results will be cached in a local folder named
-\code{geocoding_cache}.  See help for \code{CB::mappp} to change these
+By default, geocoding results will be cached in a local folder at the path
+specified by \code{cache_name}.  See help for \code{\link[mappp:mappp]{mappp::mappp()}} to change these
 defaults.
 }

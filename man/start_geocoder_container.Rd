@@ -9,10 +9,10 @@ start_geocoder_container(
 )
 }
 \arguments{
-\item{image_name}{name of geocoding image; can be used to specify the version
-i.e. \code{degauss/geocoder_slim:2.4}; defaults to
-\code{degauss/geocoder_slim:latest}}
+\item{image_name}{Name of geocoding image; can be used to specify the version. Defaults to \code{getOption( "offlinegeocoder.image", "ghcr.io/degauss-org/geocoder:v3.4.0")}.}
 }
 \description{
-start geocoding container
+Beginning with v2.2, the latest version of the geocoder image is available
+on the project GitHub repository:
+\url{https://github.com/degauss-org/geocoder/pkgs/container/geocoder}
 }
