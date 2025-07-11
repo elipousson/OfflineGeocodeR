@@ -4,13 +4,31 @@
 \alias{geocode}
 \title{geocode}
 \usage{
-geocode(addresses, ..., cache_name = tempdir())
+geocode(
+  addresses,
+  ...,
+  as_data_frame = FALSE,
+  image_name = getOption("offlinegeocoder.image", "ghcr.io/degauss-org/geocoder:v3.4.0"),
+  version = getOption("offlinegeocoder.version", "3.4.0"),
+  cache = FALSE,
+  cache_name = tempdir()
+)
 }
 \arguments{
 \item{addresses}{a list or vector addresses}
 
 \item{...}{additional arguments passed to \code{\link[mappp:mappp]{mappp::mappp()}}; set options for
 cache here}
+
+\item{as_data_frame}{If \code{TRUE}, return output as a data frame instead of a list.}
+
+\item{image_name}{Name of geocoding image; can be used to specify the version. Defaults to \code{getOption( "offlinegeocoder.image", "ghcr.io/degauss-org/geocoder:v3.4.0")}.}
+
+\item{version}{Version number. Defaults to \code{getOption("offlinegeocoder.version", "3.4.0")}. Version must match version specified by \code{image_name} parameter}
+
+\item{cache}{passed to \code{\link[mappp:mappp]{mappp::mappp()}}. If \code{TRUE}, cache results locally
+using \code{{memoise}} in the folder specified by \code{cache_name}. Defaults to
+\code{FALSE}.}
 
 \item{cache_name}{Name or path for a custom cache directory. Defaults to
 \code{tempdir()}.}

@@ -10,8 +10,14 @@
 #' defaults.
 #'
 #' @param addresses a list or vector addresses
+#' @inheritParams start_geocoder_container
+#' @inheritParams gc_call
+#' @param cache passed to [mappp::mappp()]. If `TRUE`, cache results locally
+#' using `{memoise}` in the folder specified by `cache_name`. Defaults to
+#' `FALSE`.
 #' @param cache_name Name or path for a custom cache directory. Defaults to
 #' `tempdir()`.
+#' @param as_data_frame If `TRUE`, return output as a data frame instead of a list.
 #' @param ... additional arguments passed to [mappp::mappp()]; set options for
 #'   cache here
 #' @return list of geocoding results with one address per element; some
@@ -21,12 +27,35 @@
 geocode <- function(
   addresses,
   ...,
+
+  as_data_frame = FALSE,
+  image_name = getOption(
+    "offlinegeocoder.image",
+    "ghcr.io/degauss-org/geocoder:v3.4.0"
+  ),
+  version = getOption("offlinegeocoder.version", "3.4.0"),
+  cache = FALSE,
   cache_name = tempdir()
 ) {
-  start_geocoder_container()
+  start_geocoder_container(
+    image_name = image_name
+  )
+
   on.exit(stop_geocoder_container())
   message('now geocoding...')
-  out <- mappp::mappp(addresses, gc_call, cache = TRUE, cache_name = cache_name, ...)
+  out <- mappp::mappp(
+    addresses,
+    function(x) {
+      gc_call(x, version = version)
+    },
+    cache = cache,
+    cache_name = cache_name,
+    ...
+  )
+
+  if (!as_data_frame) {
+    return(out)
+  }
 
   do.call(rbind, out)
 }

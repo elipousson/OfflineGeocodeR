@@ -62,12 +62,12 @@ stop_geocoder_container <- function() {
 #' This is used internally by `geocode()` and normally should not be called directly.
 #'
 #' @param address a string; see vignette for best practices and examples
-#'
+#' @param version Version number. Defaults to `getOption("offlinegeocoder.version", "3.4.0")`. Version must match version specified by `image_name` parameter
 #' @export
 #' @importFrom jsonlite fromJSON
 gc_call <- function(
   address,
-  version = getOption("offlinegeocoder.version", "3.4")
+  version = getOption("offlinegeocoder.version", "3.4.0")
 ) {
   docker_cmd <- find_docker_cmd()
 
